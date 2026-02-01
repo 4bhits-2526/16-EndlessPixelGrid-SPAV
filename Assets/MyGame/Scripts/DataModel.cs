@@ -8,9 +8,9 @@ public class DataModel : MonoBehaviour
     public bool[,] grid = new bool[10, 7];
 
     // UI nur Rendering!
-    public Image[] inputPixels = new Image[7];  
-    public Transform gridParent;                
-    private Image[] gridPixels;                 
+    public Image[] inputPixels = new Image[7];
+    public Transform gridParent;
+    private Image[] gridPixels;
 
     void Awake()
     {
@@ -43,7 +43,6 @@ public class DataModel : MonoBehaviour
     }
 
     // Logik ändert nur Daten
-   
     void HandleInput()
     {
         bool inputChanged = false;
@@ -60,6 +59,14 @@ public class DataModel : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             CommitLineToGridFIFO();
+            inputChanged = true;
+            gridChanged = true;
+        }
+
+        // Reset mit G
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            ResetAllData();
             inputChanged = true;
             gridChanged = true;
         }
@@ -84,8 +91,20 @@ public class DataModel : MonoBehaviour
             inputLine[i] = false;
     }
 
+    //Reset-Logik
+    void ResetAllData()
+    {
+        // Eingabezeile leeren
+        for (int i = 0; i < 7; i++)
+            inputLine[i] = false;
+
+        // Raster leeren
+        for (int row = 0; row < 10; row++)
+            for (int col = 0; col < 7; col++)
+                grid[row, col] = false;
+    }
+
     // Rendering ändert nur UI
-   
     void RenderAll()
     {
         RenderInputLine();
@@ -105,7 +124,6 @@ public class DataModel : MonoBehaviour
     {
         if (gridPixels == null || gridPixels.Length < 70) return;
 
-        
         for (int row = 0; row < 10; row++)
         {
             for (int col = 0; col < 7; col++)
